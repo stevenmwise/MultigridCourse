@@ -1,0 +1,19 @@
+&inputdata
+
+tol = 1.0D-08
+
+mx(1) = 32
+mx(2) = 32
+
+minlevel = -4
+presmooth = 3
+postsmooth = 3
+
+maxits = 20
+
+omega = 1.0D+00
+
+xlower(1) =  0.0D+00
+xupper(1) =  1.0D+00
+xlower(2) =  0.0D+00
+xupper(2) =  1.0D+00/

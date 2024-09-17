@@ -1,0 +1,29 @@
+&inputdata
+
+getenergy = .false.
+
+restart = .false.
+restartnum = 0
+
+tol = 1.0D-10
+
+numprintouts = 100
+maxtimeiterations = 1000
+dt = 1.0D-06
+
+mx(1) = 256
+mx(2) = 256
+numvars = 2
+numauxvars = 0
+minlevel = -8
+
+postsmooth = 2
+presmooth  = 2
+maxits = 5000
+
+omega = 1.0D+00
+
+xlower(1) =  0.00D+00
+xupper(1) =  1.00D+00
+xlower(2) =  0.00D+00
+xupper(2) =  1.00D+00/
