@@ -16,17 +16,17 @@ k = 0;
 err = 10.0;
 
 while ((k<kMax) & (err > tol))
-    
-    u = smooth(f,u,m1,omega);
-    res = getResidual(f,u);
-    cgc = coarseGridCorrection(res);
-    u = u+cgc;
+  
+  u = smooth(f,u,m1,omega);
+  res = getResidual(f,u);
+  cgc = coarseGridCorrection(res);
+  u = u+cgc;
 
-    err = norm(uExact-u,2)
-    corr(k+1) = norm(cgc,2);
-    errv(k+1) = err;
-    k = k+1
-    
+  err = norm(uExact-u,2)
+  corr(k+1) = norm(cgc,2);
+  errv(k+1) = err;
+  k = k+1
+  
 end
 
 clf
@@ -45,22 +45,22 @@ semilogy([1:k],exp(p1k),'-k')
 
 xlabel('$k$','Interpreter','latex');
 title('Two-grid Iteration Errors', ...
-    'Interpreter','latex');
+  'Interpreter','latex');
 legend('$\|{\bf u}_1^{\rm E}-{\bf u}_1^k\|_1$', ...
-    '$\|{\bf q}_1^{(1)} \|_1$','log-linear fit', ...
-    'Interpreter','latex');
+  '$\|{\bf q}_1^{(1)} \|_1$','log-linear fit', ...
+  'Interpreter','latex');
 text(1.5,10*tol,strcat( ...
-    '$\gamma_{\rm comp} =\hspace{.1cm}$', ...
-    num2str(rate,'%10.5e')),'FontSize',14, ...
-    'Interpreter','latex')
+  '$\gamma_{\rm comp} =\hspace{.1cm}$', ...
+  num2str(rate,'%10.5e')),'FontSize',14, ...
+  'Interpreter','latex')
 text(1.5,2*tol,strcat('$m_1 =\hspace{.1cm}$', ...
-    num2str(m1)),'FontSize',14, ...
-    'Interpreter','latex')
+  num2str(m1)),'FontSize',14, ...
+  'Interpreter','latex')
 text(1.5,0.5*tol,strcat('$\omega =\hspace{.1cm}$', ...
-    num2str(omega)),'FontSize',14, ...
-    'Interpreter','latex')
+  num2str(omega)),'FontSize',14, ...
+  'Interpreter','latex')
 printstr = strcat('Err_n1_',num2str(n1), ...
-    '_m1_',num2str(m1), '_omega_', num2str(omega),'.pdf');
+  '_m1_',num2str(m1), '_omega_', num2str(omega),'.pdf');
 exportgraphics(gca, printstr)
 hold off
 
