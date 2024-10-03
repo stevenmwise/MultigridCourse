@@ -1,0 +1,20 @@
+&inputData
+
+tol = 1.0D-08
+
+nf(1) = 256
+nf(2) = 256
+
+maxLevel = 8
+
+postSmooth = 2
+preSmooth  = 2
+pCycle = 1
+maxItrs = 100
+
+omega = 1.0D+00
+
+xLower(1) =  0.0D+00
+xUpper(1) =  3.2D+00
+xLower(2) =  0.0D+00
+xUpper(2) =  3.2D+00/

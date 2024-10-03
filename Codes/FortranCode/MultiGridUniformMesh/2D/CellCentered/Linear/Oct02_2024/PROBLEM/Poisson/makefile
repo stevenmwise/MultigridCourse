@@ -1,7 +1,7 @@
-#FOR = gfortran -IMODF -JMODF -O3 -ffast-math -funroll-loops
-FOR = gfortran -IMODF -JMODF -fbounds-check
+FOR = gfortran -IMODF -JMODF -O3 -ffast-math -funroll-loops
+#FOR = gfortran -IMODF -JMODF -fbounds-check
 #FOR = ifort -fast -IMODF -module MODF -heap-arrays
-#FOR = ifort -CB -traceback -IMODF -module MODF -heap-arrays
+#FOR = ifort -check -traceback -IMODF -module MODF -heap-arrays
 
 EXE = xlmg
 

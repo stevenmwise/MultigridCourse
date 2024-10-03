@@ -2,10 +2,10 @@
 
 tol = 1.0D-08
 
-mx(1) = 64
-mx(2) = 64
+mx(1) = 1024
+mx(2) = 1024
 
-minlevel = -6
+minlevel = -10
 
 postsmooth = 2
 presmooth  = 2

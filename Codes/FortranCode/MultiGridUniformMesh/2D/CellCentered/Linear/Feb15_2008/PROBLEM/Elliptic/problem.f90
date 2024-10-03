@@ -103,10 +103,9 @@ REAL(KIND=r8), DIMENSION(1:,1:), INTENT(IN):: f
 REAL(KIND=r8), INTENT(IN):: h
 INTEGER, INTENT(IN):: passes
 !
-INTEGER:: i, its, j, rb
+INTEGER:: i, its, j
 INTEGER, DIMENSION(1:2):: mx
 REAL(KIND=r8):: h2, omega2, tmp
-REAL(KIND=r8), DIMENSION(1:SIZE(u,1)-2,1:SIZE(u,2)-2):: utmp
 !
 mx(1) = SIZE(u,1)-2; mx(2) = SIZE(u,2)-2
 h2 = h*h
@@ -116,27 +115,17 @@ CALL BoundaryConditions(u)
 !
 DO its = 1, passes
 !
-!DO rb = 1, 2
-!
-!DO j = 1, mx(2)
-!  DO i = 1+MODULO(j+rb,2), mx(1), 2
-!
 DO j = 1, mx(2)
   DO i = 1, mx(1)
 !
     tmp = (h2*f(i,j)+u(i+1,j  )+u(i-1,j  ) &
         +            u(i  ,j+1)+u(i  ,j-1))/(4.0_r8+h2)
     u(i,j) = omega*tmp+omega2*u(i,j)
-    utmp(i,j) = tmp
 !
   END DO
 END DO
 !
-!u(1:mx(1),1:mx(2)) = utmp(1:mx(1),1:mx(2))
-!
 CALL BoundaryConditions(u)
-!
-!END DO
 !
 END DO
 !
