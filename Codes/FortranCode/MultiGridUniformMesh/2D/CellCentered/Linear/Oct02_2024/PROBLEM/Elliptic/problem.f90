@@ -19,13 +19,13 @@ CALL BoundaryConditions(u)
 !
 nf(1) = SIZE(u,1)-2; nf(2) = SIZE(u,2)-2
 !
-residualResult(1:nf(1),1:nf(2)) =          f(1:nf(1)  ,1:nf(2)  ) &
-                                - Operator(u(0:nf(1)+1,0:nf(2)+1),hf)
+residualResult(1:nf(1),1:nf(2)) =            f(1:nf(1)  ,1:nf(2)  ) &
+                                - FDOperator(u(0:nf(1)+1,0:nf(2)+1),hf)
 !
 END FUNCTION Residual
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
-FUNCTION Operator(u,hf) RESULT(operatorResult)
+FUNCTION FDOperator(u,hf) RESULT(operatorResult)
 USE Global
 IMPLICIT NONE
 !
@@ -51,7 +51,7 @@ operatorResult(1:nf(1),1:nf(2)) = -(       u(2:nf(1)+1,1:nf(2)  ) &
                                   - 4.0_r8*u(1:nf(1)  ,1:nf(2)  ))/hf2 &
                                   +        u(1:nf(1)  ,1:nf(2)  )
 !
-END FUNCTION Operator
+END FUNCTION FDOperator
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
 FUNCTION Smooth(u,f,hf,passes) RESULT(smoothResult)

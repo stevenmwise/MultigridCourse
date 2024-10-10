@@ -9,7 +9,7 @@ maxLevel = 8
 
 postSmooth = 2
 preSmooth  = 2
-pCycle = 1
+pCycle = 2
 maxItrs = 100
 
 omega = 1.0D+00

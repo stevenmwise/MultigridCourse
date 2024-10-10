@@ -1,6 +1,7 @@
 PROGRAM LMGDriver
 USE Global
 USE LinearMultigridRoutines, ONLY: LinearMultigrid
+USE Problem, ONLY: FDOperator, BoundaryConditions
 IMPLICIT NONE
 !
 INTEGER:: i, iError, iter, j, level
@@ -55,8 +56,6 @@ END IF
 !
 ALLOCATE(u(0:nf(1)+1,0:nf(2)+1),f(1:nf(1),1:nf(2)))
 !
-u = 0.0_r8
-!
 c1 = (xLower(1)+xUpper(1))/2.0_r8
 c2 = (xLower(2)+xUpper(2))/2.0_r8
 !
@@ -65,10 +64,14 @@ DO i = 1, nf(1)
   DO j = 1, nf(2)
     y = (REAL(j,KIND=r8)-0.5_r8)*h+xLower(2)
 !   
-    f(i,j) = EXP(COS(2.0_r8*pi*x/p1)*COS(2.0_r8*pi*y/p2))
+    u(i,j) = EXP(COS(2.0_r8*pi*x/p1)*COS(2.0_r8*pi*y/p2))
 !
   END DO
 END DO
+!
+CALL BoundaryConditions(u)
+f = FDOperator(u,h)
+u = 0.0_r8
 !
 u = LinearMultigrid(u,f,h,tol,iter)
 !
