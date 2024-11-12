@@ -1,14 +1,14 @@
-function u = smooth(u,f,hf,m,omega)
+function u = smooth(u,f,h,m,omega)
 
-  nfPlusGhostLayers = size(u);
-  nf = nfPlusGhostLayers-2;
-  hf2 = hf*hf;
+  nPlusGhostLayers = length(u);
+  n = nPlusGhostLayers-2;
+  h2 = h*h;
     
   u = applyBCs(u);
 
   for k = 1:m
-    for i = 2:nf(1)+1
-      u(i) = (hf2*f(i-1)+u(i+1)+u(i-1))/(2.0+hf2); 
+    for i = 2:n+1
+      u(i) = (h2*f(i-1)+u(i+1)+u(i-1))/(2.0+h2); 
     end
 
     u = applyBCs(u);

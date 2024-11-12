@@ -1,4 +1,5 @@
 function u = MGOperator(u,f,hf,level,MGParam)
+
   nfPlusGhostLayers = length(u);
   nf = nfPlusGhostLayers-2;
 
@@ -20,4 +21,5 @@ function u = MGOperator(u,f,hf,level,MGParam)
 
     u = smooth(u,f,hf,MGParam.m2,MGParam.omega);
   end
+  
 end

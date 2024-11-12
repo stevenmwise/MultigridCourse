@@ -1,4 +1,5 @@
 function presult = prolongation(u)
+
   nc = length(u);
   nf = nc*2;
   presult = zeros(nf,1);

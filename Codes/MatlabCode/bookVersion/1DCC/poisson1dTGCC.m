@@ -12,7 +12,8 @@ A1 = gallery('tridiag',n1,-1.0,2.0,-1.0);
 A1( 1, 1) = 3.0;
 A1(n1,n1) = 3.0;
 uExact = exp(sin(3.0*pi*x))-1.0;
-f = A1*uExact/(h1*h1);
+%f = A1*uExact/(h1*h1);
+f = A1*uExact;
 
 [u,rate] = twoGridCC(f,n1,m1,omega,kMax,tol,uExact);
 

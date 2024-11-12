@@ -28,9 +28,9 @@ for k = L-1:-1:0
   nl = nl/2;
 end
 
-pCycle = 2;
-m1 = 3;
-m2 = 3;
+pCycle = 1;
+m1 = 2;
+m2 = 2;
 omega = 1.0;
 kMax = 100;
 
