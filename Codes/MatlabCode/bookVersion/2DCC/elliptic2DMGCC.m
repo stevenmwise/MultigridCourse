@@ -1,9 +1,16 @@
-tol = 1.0e-09;
+tol = 1.0e-11;
 nL = [2048,2048];
 L = 11;
 xLower = [0.0,0.0];
 xUpper = [3.2,3.2];
 hhL = (xUpper-xLower)./nL;
+
+pCycle = 1;
+m1 = 2;
+m2 = 2;
+omega = 1.0;
+kMax = 100;
+
 %
 % Check mesh spacing.
 if abs(hhL(1)-hhL(2))>1.0e-10
@@ -28,12 +35,6 @@ for k = L-1:-1:0
   nl = nl/2;
 end
 
-pCycle = 1;
-m1 = 2;
-m2 = 2;
-omega = 1.0;
-kMax = 100;
-
 MGParam.nL = nL;
 MGParam.xLower = xLower;
 MGParam.xUpper = xUpper;
@@ -44,8 +45,10 @@ MGParam.m2 = m2;
 MGParam.omega = omega;
 MGParam.kMax = kMax;
 MGParam.tol = tol;
-    
-u = zeros(nL(1)+2,nL(2)+2);
+
+SEED = 1234;
+rng(SEED);
+u = rand(nL(1)+2,nL(2)+2)-0.5;
 uExact = zeros(nL(1)+2,nL(2)+2);
 f = zeros(nL(1),nL(2));
     
@@ -71,8 +74,8 @@ uPlot(1:nL(1),1:nL(1)) = u(2:nL(1)+1,2:nL(2)+1);
 [x, y] = meshgrid(linspace(xLower(1)+hL/2,xUpper(1)-hL/2,nL(1)), ...
                   linspace(xLower(2)+hL/2,xUpper(2)-hL/2,nL(2)));
 
-clf
 figure(1)
+clf
 
 surf(x,y,uPlot,'EdgeColor','none');
 title('Numerical Solution u');
@@ -84,6 +87,7 @@ view(2); % View from top
 axis equal tight;
 
 figure(2)
+clf
 
 semilogy(errVals(1:kStop,3),'bo','LineWidth',1.5)
 hold on
@@ -92,12 +96,15 @@ hold on
 semilogy(errVals(1:kStop,1),'kd','LineWidth',1.5)
 hold on
 
-kv = [kStop-3:kStop];
-le = log(errVals(kStop-3:kStop,3));
-p1 = polyfit(kv,le,1);
-rate = exp(p1(1));
-p1k = polyval(p1,[1:kStop]);
-semilogy([1:kStop],exp(p1k),'-k')
+rate = 1.0;
+if kStop >= 4
+  kv = [kStop-3:kStop];
+  le = log(errVals(kStop-3:kStop,3));
+  p1 = polyfit(kv,le,1);
+  rate = exp(p1(1));
+  p1k = polyval(p1,[1:kStop]);
+  semilogy([1:kStop],exp(p1k),'-k')
+end
 
 xlabel('$k$','Interpreter','latex');
 title('Multigrid Iteration Errors', ...

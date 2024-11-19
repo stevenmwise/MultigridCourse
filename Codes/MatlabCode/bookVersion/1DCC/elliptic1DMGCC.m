@@ -4,9 +4,14 @@ L = 12;
 xLower = 0.0;
 xUpper = 3.2;
 hL = (xUpper-xLower)./nL;
+
+pCycle = 1;
+m1 = 2;
+m2 = 2;
+omega = 1.0;
+kMax = 100;
 %
 % Check mesh coarsening.
-%
 if nL < 0
   disp('nL must be a positive integer.')
   return
@@ -20,12 +25,6 @@ for k = L-1:-1:0
   nl = nl/2;
 end
 
-pCycle = 1;
-m1 = 3;
-m2 = 3;
-omega = 1.0;
-kMax = 100;
-
 MGParam.nL = nL;
 MGParam.xLower = xLower;
 MGParam.xUpper = xUpper;
@@ -36,8 +35,10 @@ MGParam.m2 = m2;
 MGParam.omega = omega;
 MGParam.kMax = kMax;
 MGParam.tol = tol;
-    
-u = zeros(nL+2,1);
+
+SEED = 1234;
+rng(SEED);
+u = rand(nL+2,1)-0.5;
 uExact = zeros(nL+2,1);
 f = zeros(nL,1);
     
@@ -47,6 +48,7 @@ for i = 1:nL
   x = (i-0.5)*hL+xLower;
   uExact(i+1) = exp(cos(2.0*pi*x/px));
 end
+
 %
 % Manufacture the forcing vector.
 uExact = applyBCs(uExact);
@@ -59,8 +61,8 @@ uPlot(1:nL) = u(2:nL+1);
 % Plot solution details.
 x =linspace(xLower+hL/2,xUpper-hL/2,nL);
 
-clf
 figure(1)
+clf
 
 plot(x,uPlot,'k-');
 title('Numerical Solution u');
@@ -69,6 +71,7 @@ ylabel('u(x)');
 axis equal tight;
 
 figure(2)
+clf
 
 semilogy(errVals(1:kStop,3),'bo','LineWidth',1.5)
 hold on
@@ -77,12 +80,15 @@ hold on
 semilogy(errVals(1:kStop,1),'kd','LineWidth',1.5)
 hold on
 
-kv = [kStop-3:kStop];
-le = log(errVals(kStop-3:kStop,3));
-p1 = polyfit(kv,le,1);
-rate = exp(p1(1));
-p1k = polyval(p1,[1:kStop]);
-semilogy([1:kStop],exp(p1k),'-k')
+rate = 1.0;
+if kStop >= 4
+  kv = [kStop-3:kStop];
+  le = log(errVals(kStop-3:kStop,3));
+  p1 = polyfit(kv,le,1);
+  rate = exp(p1(1));
+  p1k = polyval(p1,[1:kStop]);
+  semilogy([1:kStop],exp(p1k),'-k')
+end
 
 xlabel('$k$','Interpreter','latex');
 title('Multigrid Iteration Errors', ...

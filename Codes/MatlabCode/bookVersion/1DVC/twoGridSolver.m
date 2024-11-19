@@ -1,11 +1,8 @@
-function [u,errVals,kStop] = twoGridSolver(f,n1,m1,omega,kMax, ...
+function [u,errVals,kStop] = twoGridSolver(u,f,n1,m1,omega,kMax, ...
   tol,uExact)
 
 errVals = zeros(kMax,3);
 
-SEED = 1234;
-rng(SEED);
-u = rand(n1,1)-0.5;
 res = zeros(n1,1);
 cgc = zeros(n1,1);
 rate = 1.0;

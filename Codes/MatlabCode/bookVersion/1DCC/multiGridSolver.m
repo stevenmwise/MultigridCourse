@@ -5,7 +5,7 @@ function [u,errVals,kStop] = multiGridSolver(uo,f,hf,MGParam,uExact)
   error = MGParam.tol+1.0;
   errVals = zeros(MGParam.kMax,3);
   
-  while ((k<MGParam.kMax) & (error > MGParam.tol))
+  while ((k < MGParam.kMax) & (error > MGParam.tol))
 
     u = MGOperator(uo,f,hf,MGParam.L,MGParam);
 

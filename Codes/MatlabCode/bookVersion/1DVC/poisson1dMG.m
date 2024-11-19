@@ -1,5 +1,7 @@
 clear
 
+%
+% Set multigrid parameters.
 nL = 255;
 hL = 1/(nL+1);
 L = 7;
@@ -10,10 +12,30 @@ omega = 2/3;
 tol = 1e-09;
 kMax = 20;
 
+%
+% Check mesh coarsening.
+nl = nL;
+for k = L-1:-1:0
+  if mod(nl+1,2) ~= 0
+    disp('Coarsening error: L is too large.')
+    return
+  end
+  nl = (nl+1)/2-1;
+end
+
+%
+% Give a random initial guess.
+SEED = 1234;
+rng(SEED);
+u = rand(nL,1)-0.5;
+rate = 1.0;
+
+%
+% Construct the exact solution and necessary forcing vector.
 x = linspace(hL,1.0-hL,nL)';
-A1 = gallery('tridiag',nL,-1.0/hL,2.0/hL,-1.0/hL);
+AL = gallery('tridiag',nL,-1.0/hL,2.0/hL,-1.0/hL);
 uExact = exp(sin(3.0*pi*x))-1.0;
-f = A1*uExact;
+f = AL*uExact;
 
 MGParam.nL = nL;
 MGParam.L = L;
@@ -24,7 +46,9 @@ MGParam.omega = omega;
 MGParam.tol = tol;
 MGParam.kMax = kMax;
 
-[u,errVals,kStop] = multiGridSolver(f,MGParam,uExact);
+%
+% Call the solver.
+[u,errVals,kStop] = multiGridSolver(u,f,MGParam,uExact);
 
 figure(1)
 clf
@@ -45,12 +69,17 @@ hold on
 semilogy(errVals(1:kStop,2),'rs','LineWidth',1.5)
 hold on
 
-kv = [kStop-3:kStop];
-le = log(errVals(kStop-3:kStop,3));
-p1 = polyfit(kv,le,1);
-rate = exp(p1(1));
-p1k = polyval(p1,[1:kStop]);
-semilogy([1:kStop],exp(p1k),'-k')
+%
+% Estimate the rate of contraction:
+rate = 1.0;
+if kStop >= 4 
+  kv = [kStop-3:kStop];
+  le = log(errVals(kStop-3:kStop,3));
+  p1 = polyfit(kv,le,1);
+  rate = exp(p1(1));
+  p1k = polyval(p1,[1:kStop]);
+  semilogy([1:kStop],exp(p1k),'-k')
+end
 
 xlabel('$k$','Interpreter','latex');
 title('Multigrid Iteration Errors', ...
