@@ -6,14 +6,14 @@ h2 = iterParam.h2;
 kMax = iterParam.kMax;
 tol = iterParam.tol;
 sig = cos(pi*h);
-omega = 2/(1+sqrt(1-sig*sig))
+omega = 2/(1+sqrt(1-sig*sig));
 omOmega = 1.0-omega;
 
 errVals = zeros(kMax,1);
 
 k = 0;
 err = tol+1.0;
-%
+
 % SOR loop.
 while ((k < kMax) && (err > tol))
   

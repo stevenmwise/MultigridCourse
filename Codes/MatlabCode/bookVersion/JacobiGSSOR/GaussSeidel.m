@@ -9,7 +9,7 @@ errVals = zeros(kMax,1);
 
 k = 0;
 err = tol+1.0;
-%
+
 % Gauss-Seidel loop.
 while ((k < kMax) && (err > tol))
   

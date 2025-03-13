@@ -10,7 +10,7 @@ z = zeros(n,1);
 
 k = 0;
 err = tol+1.0;
-%
+
 % Jacobi loop.
 while ((k < kMax) && (err > tol))
 
