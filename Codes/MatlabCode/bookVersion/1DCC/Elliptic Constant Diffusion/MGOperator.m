@@ -4,11 +4,12 @@ nfPlusGhostLayers = length(u);
 nf = nfPlusGhostLayers-2;
 
 % Pre-smoothing.
-u = smoothJacobiDamped(f,u,hf,MGParam.m1,MGParam.omega);
+u = smoothQJacDamped(f,u,hf,MGParam.m1,MGParam.omega);
 
 % Alternative pre-smoothing options:
-% u = smoothJacobi(f,u,hf,MGParam.m1);
-% u = smoothGaussSeidel(f,u,hf,MGParam.m1,'Forward');
+% u = smoothRichardson(f,u,hf,MGParam.m1,MGParam.omega);
+% u = smoothQGSDamped(f,u,hf,MGParam.m1,...
+%   MGParam.omega,'Forward');
 
 if level > 0
   hc = 2*hf;
@@ -24,15 +25,17 @@ if level > 0
     cGc = MGOperator(level-1,cGr,cGc,hc,MGParam);
   end
   
-  % Prolongate the coarse grid correction and update the ...
+  % Prolongate the coarse grid correction and update the...
   % fine grid solution.
   u(2:nf+1) = u(2:nf+1) + prolongation(cGc(2:nc+1));
   
   % Post-smoothing.
-  u = smoothJacobiDamped(f,u,hf,MGParam.m2,MGParam.omega);
+  u = smoothQJacDamped(f,u,hf,MGParam.m2,MGParam.omega);
   
   % Alternative post-smoothing options:
-  % u = smoothJacobi(f,u,hf,MGParam.m2);
-  % u = smoothGaussSeidel(f,u,hf,MGParam.m2,'Backward');
+  % u = smoothRichardson(f,u,hf,MGParam.m2,MGParam.omega);
+  % u = smoothQGSDamped(f,u,hf,MGParam.m2,...
+  %   MGParam.omega,'Backward');
 end
+
 end

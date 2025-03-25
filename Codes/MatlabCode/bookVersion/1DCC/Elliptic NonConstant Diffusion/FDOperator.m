@@ -8,7 +8,7 @@ for i = 1:n
   iU = i+1;
   
   % Compute the flux difference.
-  operatorResult(i) = (-(D(i+1)*(u(iU+1)-u(iU))- ...
+  operatorResult(i) = (-(D(i+1)*(u(iU+1)-u(iU))-...
     D(i)*(u(iU)-u(iU-1)))/h2)+u(iU);
 end
 
