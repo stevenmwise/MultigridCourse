@@ -1,11 +1,13 @@
 function u = MGOperator(level,f,DeW,DnS,u,hf,MGParam)
 
+rC = MGParam.rC;
+
 % Pre-smoothing
-u = smoothQJacDamped(f,DeW,DnS,u,hf,MGParam.m1, ...
+u = smoothQJacDamped(f,DeW,DnS,rC,u,hf,MGParam.m1, ...
   MGParam.omega);
 
 % Alternative pre-smoothing option:
-% u = smoothQGSDamped(f,DeW,DnS,u,hf, ...
+% u = smoothQGSDamped(f,DeW,DnS,rC,u,hf, ...
 %   MGParam.m1,MGParam.omega,'fwd');
 
 if level > 0
@@ -34,11 +36,11 @@ if level > 0
     + prolongation(cGc(2:nc(1)+1,2:nc(2)+1));
     
 % Post-smoothing.
-  u = smoothQJacDamped(f,DeW,DnS,u,hf,MGParam.m2, ...
+  u = smoothQJacDamped(f,DeW,DnS,rC,u,hf,MGParam.m2, ...
     MGParam.omega);
 
 % Alternative post-smoothing option:
-%   u = smoothQGSDamped(f,DeW,DnS,u,hf, ...
+%   u = smoothQGSDamped(f,DeW,DnS,rC,u,hf, ...
 %     MGParam.m2,MGParam.omega,'bwd');
 end
 

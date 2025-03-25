@@ -6,6 +6,9 @@ nf = nfPlusGhostLayers-2;
 nx = nf(1);
 ny = nf(2);
 hf2 = hf*hf;
+
+rC = MGParam.rC;
+
 %
 % Vectorized Code:
 %
@@ -21,6 +24,6 @@ fnS(1:nx,1:ny+1) ...
 operatorResult(1:nx,1:ny) ...
   = -(feW(2:nx+1,1:ny)-feW(1:nx,1:ny) ...
    +  fnS(1:nx,2:ny+1)-fnS(1:nx,1:ny))/hf2 ...
-   + u(2:nx+1,2:ny+1);
+   + rC*u(2:nx+1,2:ny+1);
 
 end

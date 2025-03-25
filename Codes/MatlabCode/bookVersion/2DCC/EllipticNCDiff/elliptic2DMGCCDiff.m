@@ -1,13 +1,18 @@
-%% elliptic2DMGCCDiff.m
+%
+%   elliptic2DMGCCDiff.m
 %
 % Calling script for solving the 2D elliptic equation
 %
-%   -div(D grad u) + u = f
+%   -div(D grad u) + rC*u = f
 %
 % on a rectangular domain, where D is a non-constant
-% diffusion coefficient. Discretization is accomplished 
-% using the cell-centered finite difference method. The
-% cell-centered multigrid method is used as the solver.
+% diffusion coefficient, and rC is a constant. The boundary 
+% conditions may be taken to be (i) homogeneous Dirichlet,
+% (ii) homogeneous Neumann, or (iii) periodic.
+% 
+% Discretization is accomplished using the cell-centered 
+% finite difference method. The cell-centered multigrid method
+% is used as the solver.
 %
 %% Initialization and Parameter
 
@@ -35,6 +40,7 @@ m1     = 3;
 m2     = 3;
 omega  = 0.8;
 kMax   = 100;
+rC     = 2.0;
 
 %% Setting up the multigrid solver
 
@@ -63,8 +69,10 @@ MGParam.m2     = m2;
 MGParam.omega  = omega;
 MGParam.kMax   = kMax;
 MGParam.tol    = tol;
+MGParam.rC     = rC;
 
-% Allocate solution arrays (with +2 ghost layers).
+
+% Allocate solution arrays (with ghost layers).
 u      = zeros(nL(1)+2,nL(2)+2);
 uExact = zeros(nL(1)+2,nL(2)+2);
 f      = zeros(nL(1)  ,nL(2)  );
@@ -117,7 +125,7 @@ f = FDOperator(uExact,DeW,DnS,hL,MGParam);
 %rng(1234);
 %u = rand(size(u))-0.5;
 
-%% Calling the Multigrid solver.
+%% Call the Multigrid solver.
 
 tic;
 [u,errVals,kStop] = multiGridSolver(u,f,DeW,DnS,hL,MGParam, ...

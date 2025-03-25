@@ -1,4 +1,4 @@
-function u = smoothQJacDamped(f,DeW,DnS,u,hf,m,omega)
+function u = smoothQJacDamped(f,DeW,DnS,rC,u,hf,m,omega)
 
 nfPlusGhostLayers = size(u);
 nf = nfPlusGhostLayers-2;
@@ -18,7 +18,8 @@ for sweep = 1:m
              +             u(i  ,j+1)*DeW(i  ,j  ) ...
              +             u(i+1,j+2)*DnS(i  ,j+1) ...
              +             u(i+1,j  )*DnS(i  ,j  )) ...
-             / (DeW(i+1,j)+DeW(i,j)+DnS(i,j+1)+DnS(i,j)+hf2);
+             / (DeW(i+1,j)+DeW(i,j)+DnS(i,j+1)+DnS(i,j) ...
+             + rC*hf2);
 
     end
   end
